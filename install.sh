@@ -32,7 +32,6 @@ apt-get install -y \
     python3-pkgconfig && \
     rm -rf /var/lib/apt/lists/*
 
-
 ###############################################################################
 #
 #							OpenCV
@@ -66,7 +65,8 @@ apt-get install -y \
 # Download OpenCV and build from source
 cd "$INSTALL_BASE_DIR"
 wget -O "$INSTALL_BASE_DIR"/opencv.zip https://github.com/opencv/opencv/archive/4.1.0.zip
-if [ ! -d $result_name ];then
+if [ ! -f $result_name ];then
+   ls
    echo "Error: failed to extract OpenCV Zip file, shell scripts are forced to be terminated."
    exit
 fi
