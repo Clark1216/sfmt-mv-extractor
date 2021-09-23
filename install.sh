@@ -6,11 +6,18 @@ INSTALL_DIR="$PWD"
 echo "Installing module into: $INSTALL_DIR"
 
 # Install build tools
-apt-get update && \
-apt-get upgrade -y && \
+apt-get update -qq --fix-missing && \
+apt-get upgrade -y \
+
+echo "wget and unzip package being installed"
+
 apt-get install -y \
     wget \
-    unzip \
+    unzip
+
+echo "wget and unzip package installed"
+
+apt-get install -y \
     build-essential \
     cmake \
     git \
@@ -32,7 +39,8 @@ apt-get install -y \
 ###############################################################################
 
 # Install opencv dependencies
-apt-get update && \
+apt-get update -qq --fix-missing && \
+apt-get upgrade -y && \
 apt-get install -y \
     libgtk-3-dev \
     libavcodec-dev \
@@ -85,7 +93,8 @@ ldconfig
 ###############################################################################
 
 # Install FFMPEG dependencies
-apt-get update -qq && \
+apt-get update -qq --fix-missing && \
+apt-get upgrade -y && \
 apt-get -y install \
     libass-dev \
     libfreetype6-dev \
@@ -133,20 +142,17 @@ cd "$INSTALL_BASE_DIR"/ffmpeg_sources/ffmpeg && \
 ./configure \
 --prefix="$INSTALL_BASE_DIR/ffmpeg_build" \
 --pkg-config-flags="--static" \
---extra-cflags="-I$INSTALL_BASE_DIR/ffmpeg_build/include" \
---extra-ldflags="-L$INSTALL_BASE_DIR/ffmpeg_build/lib" \
+--extra-cflags="-I$INSTALL_BASE_DIR/ffmpeg_build/include -static" \
+--extra-ldflags="-L$INSTALL_BASE_DIR/ffmpeg_build/lib -static" \
 --extra-libs="-lpthread -lm" \
 --bindir="$INSTALL_BASE_DIR/bin" \
 --enable-gpl \
---enable-libass \
---enable-libfdk-aac \
 --enable-libfreetype \
 --enable-libmp3lame \
 --enable-libopus \
 --enable-libvorbis \
 --enable-libvpx \
 --enable-libx264 \
---enable-libx265 \
 --enable-nonfree \
 --enable-pic && \
 make -j $(nproc) && \
