@@ -2,6 +2,7 @@
 
 INSTALL_BASE_DIR="$PWD/.."
 INSTALL_DIR="$PWD"
+result_name="opencv.zip"
 
 echo "Installing module into: $INSTALL_DIR"
 
@@ -65,6 +66,10 @@ apt-get install -y \
 # Download OpenCV and build from source
 cd "$INSTALL_BASE_DIR"
 wget -O "$INSTALL_BASE_DIR"/opencv.zip https://github.com/opencv/opencv/archive/4.1.0.zip
+if [ ! -d $result_name ];then
+   echo "Error: failed to extract OpenCV Zip file, shell scripts are forced to be terminated."
+   exit
+fi
 unzip "$INSTALL_BASE_DIR"/opencv.zip
 mv "$INSTALL_BASE_DIR"/opencv-4.1.0/ "$INSTALL_BASE_DIR"/opencv/
 rm -rf "$INSTALL_BASE_DIR"/opencv.zip
@@ -132,6 +137,7 @@ cd "$INSTALL_BASE_DIR"/ffmpeg_sources/ffmpeg
 # Install patch for FFMPEG which exposes timestamp in AVPacket
 export FFMPEG_INSTALL_DIR="$INSTALL_BASE_DIR/ffmpeg_sources/ffmpeg"
 export FFMPEG_PATCH_DIR="$INSTALL_DIR/ffmpeg_patch"
+export PKG_CONFIG_PATH="$INSTALL_BASE_DIR/ffmpeg_build/lib/pkgconfig"
 
 chmod +x "$FFMPEG_PATCH_DIR"/patch.sh
 "$FFMPEG_PATCH_DIR"/patch.sh
